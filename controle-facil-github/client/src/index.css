@@ -1,0 +1,199 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 6px);
+  --radius-2xl: calc(var(--radius) + 12px);
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+}
+
+:root {
+  --user-font-scale: 1;
+  --radius: 1rem;
+  --background: #f8fafc;
+  --foreground: #0f172a;
+  --card: #ffffff;
+  --card-foreground: #0f172a;
+  --popover: #ffffff;
+  --popover-foreground: #0f172a;
+  --primary: #db2777;
+  --primary-foreground: #ffffff;
+  --secondary: #e2e8f0;
+  --secondary-foreground: #0f172a;
+  --muted: #f1f5f9;
+  --muted-foreground: #475569;
+  --accent: #f8fafc;
+  --accent-foreground: #0f172a;
+  --destructive: #dc2626; /* Vermelho alerta forte */
+  --destructive-foreground: #ffffff;
+  --border: #cbd5e1;
+  --input: #cbd5e1;
+  --ring: #db2777;
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground font-sans antialiased;
+    font-size: calc(18px * var(--user-font-scale)); /* Base ligeiramente maior para idosos */
+  }
+  button:not(:disabled),
+  [role="button"]:not([aria-disabled="true"]),
+  [type="button"]:not(:disabled),
+  [type="submit"]:not(:disabled) {
+    @apply cursor-pointer transition-transform duration-100 active:scale-95 select-none;
+  }
+}
+
+/* Identidade “Controle Fácil”: acolhedora, artesanal e ainda muito legível. */
+body {
+  background-color: #fffafc;
+  background-image:
+    radial-gradient(circle at 8% 8%, rgba(251, 207, 232, 0.34) 0, rgba(251, 207, 232, 0) 24rem),
+    radial-gradient(circle at 92% 18%, rgba(254, 240, 138, 0.24) 0, rgba(254, 240, 138, 0) 20rem);
+}
+
+/* No computador, a interface ganha mais área útil sem perder legibilidade.
+   Celulares e tablets continuam com a base maior para facilitar o toque e a leitura. */
+@media (min-width: 1024px) {
+  html { font-size: calc(14px * var(--user-font-scale)); }
+  body { font-size: calc(16px * var(--user-font-scale)); }
+}
+
+.brand-mark {
+  position: relative;
+  background: linear-gradient(145deg, #fce7f3 0%, #fef3c7 100%);
+  box-shadow: 0 8px 18px rgba(219, 39, 119, 0.14), inset 0 0 0 1px rgba(219, 39, 119, 0.12);
+}
+
+.brand-mark::after {
+  content: '';
+  position: absolute;
+  width: 7px;
+  height: 7px;
+  right: -3px;
+  top: 5px;
+  border-radius: 999px;
+  background: #facc15;
+  box-shadow: 0 0 0 3px #fff;
+}
+
+.brand-kicker {
+  color: #b7792e;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  font-size: 0.65rem;
+  font-weight: 900;
+}
+
+.brand-greeting {
+  color: #be185d;
+  font-size: 0.78rem;
+  font-weight: 900;
+  letter-spacing: 0.02em;
+}
+
+.brand-footer-note {
+  color: #1d4ed8;
+}
+
+/* Tradução dos antigos acentos verdes para a paleta rosa da Faby Festas. */
+.bg-emerald-50 { background-color: #fdf2f8 !important; }
+.bg-emerald-100 { background-color: #fce7f3 !important; }
+.bg-emerald-600 { background-color: #db2777 !important; }
+.bg-emerald-700 { background-color: #be185d !important; }
+.bg-emerald-800 { background-color: #9d174d !important; }
+.text-emerald-600 { color: #db2777 !important; }
+.text-emerald-700 { color: #be185d !important; }
+.text-emerald-800 { color: #9d174d !important; }
+.border-emerald-200 { border-color: #f9a8d4 !important; }
+.border-emerald-300 { border-color: #f472b6 !important; }
+.border-emerald-400 { border-color: #ec4899 !important; }
+
+.adaptive-card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr));
+  gap: 1rem;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .brand-mark {
+    animation: brand-breathe 4s ease-in-out infinite;
+  }
+
+  @keyframes brand-breathe {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-2px); }
+  }
+}
+
+@media print {
+  @page {
+    size: A4;
+    margin: 12mm;
+  }
+
+  body {
+    background: white !important;
+  }
+
+  body * {
+    visibility: hidden !important;
+  }
+
+  .print-report-overlay {
+    visibility: visible !important;
+    position: static !important;
+    inset: auto !important;
+    padding: 0 !important;
+    background: white !important;
+  }
+
+  .print-report-overlay * {
+    visibility: visible !important;
+  }
+
+  .print-report {
+    display: block !important;
+    max-width: none !important;
+    max-height: none !important;
+    overflow: visible !important;
+    border: 0 !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    padding: 0 !important;
+  }
+
+  .print-report-actions {
+    display: none !important;
+  }
+
+  .report-paper {
+    display: block !important;
+  }
+}

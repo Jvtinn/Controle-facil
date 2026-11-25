@@ -1,0 +1,13 @@
+{
+  "name": "Faby Festas — Controle de Estoque",
+  "short_name": "Faby Estoque",
+  "description": "Controle simples de estoque da Faby Festas",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#fffafc",
+  "theme_color": "#db2777",
+  "lang": "pt-BR",
+  "icons": [
+    { "src": "/faby-icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any maskable" }
+  ]
+}

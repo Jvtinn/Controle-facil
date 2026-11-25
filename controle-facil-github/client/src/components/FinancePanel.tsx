@@ -1,0 +1,16 @@
+import React, { useState } from 'react';
+import { Receipt, Plus, Trash2, Wallet } from 'lucide-react';
+import { useStock } from '../contexts/StockContext';
+import { useCloud } from '../contexts/CloudContext';
+import { Suppliers } from './Suppliers';
+
+const money = (value: number) => `R$ ${value.toFixed(2).replace('.', ',')}`;
+export const FinancePanel: React.FC = () => {
+  const { extraExpenses, recordExtraExpense, deleteExtraExpense } = useStock();
+  const { profile } = useCloud();
+  const [description, setDescription] = useState('');
+  const [amount, setAmount] = useState('');
+  const canEdit = !profile || profile.role === 'owner';
+  const addExpense = (event: React.FormEvent) => { event.preventDefault(); const value = Number(amount.replace(',', '.')); if (!description.trim() || value <= 0) return; recordExtraExpense(description, value); setDescription(''); setAmount(''); };
+  return <section className="space-y-6"><div className="rounded-3xl bg-gradient-to-br from-yellow-50 to-white border-2 border-yellow-200 p-5 sm:p-6 flex items-center gap-4"><div className="rounded-2xl bg-yellow-400 text-slate-950 p-4"><Wallet className="w-8 h-8" /></div><div><p className="brand-kicker">Dinheiro da loja</p><h2 className="text-2xl sm:text-3xl font-black text-slate-900">Financeiro e fornecedores</h2><p className="text-base font-semibold text-slate-600">Veja os contatos e registre fretes, taxas e outras despesas.</p></div></div><Suppliers /><div className="bg-white rounded-3xl border-2 border-slate-200 p-5 shadow-sm"><div className="flex items-center gap-2 mb-4"><Receipt className="w-6 h-6 text-yellow-700" /><h3 className="text-xl font-black text-slate-900">Despesas extras</h3></div>{canEdit ? <form onSubmit={addExpense} className="grid grid-cols-1 md:grid-cols-[1fr_180px_auto] gap-3"><input required value={description} onChange={(e) => setDescription(e.target.value)} placeholder="Ex.: frete, taxa de entrega, embalagem" className="px-4 py-3.5 rounded-xl border-2 border-slate-200 font-bold" /><input required value={amount} onChange={(e) => setAmount(e.target.value)} inputMode="decimal" placeholder="Valor (R$)" className="px-4 py-3.5 rounded-xl border-2 border-slate-200 font-bold" /><button className="flex items-center justify-center gap-2 px-5 py-3.5 rounded-xl bg-yellow-500 hover:bg-yellow-600 text-slate-950 font-black"><Plus className="w-5 h-5" />Registrar</button></form> : <p className="rounded-2xl bg-slate-50 p-4 font-semibold text-slate-600">Somente a dona pode registrar ou remover despesas.</p>}<div className="mt-5 space-y-2">{extraExpenses.slice(0, 20).map((expense) => <div key={expense.id} className="flex items-center justify-between gap-3 rounded-2xl border border-slate-200 px-4 py-3"><div><p className="font-black text-slate-800">{expense.description}</p><p className="text-xs font-semibold text-slate-500">{new Date(expense.date).toLocaleString('pt-BR')}</p></div><div className="flex items-center gap-3"><strong className="text-rose-700">{money(expense.amount)}</strong>{canEdit && <button type="button" onClick={() => deleteExtraExpense(expense.id)} className="p-2 rounded-xl bg-rose-50 text-rose-700" title="Excluir despesa"><Trash2 className="w-4 h-4" /></button>}</div></div>)}{extraExpenses.length === 0 && <p className="text-slate-500 font-semibold">Nenhuma despesa extra registrada.</p>}</div></div></section>;
+};
